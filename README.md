@@ -83,7 +83,7 @@ Album art needs no setup. Artist photos, genres and playlists use the Spotify We
 3. Set the Client ID for everyone using your deployment:
 
    ```bash
-   # .env.local (gitignored)
+   # .env.local (gitignored; copy .env.example)
    NEXT_PUBLIC_SPOTIFY_CLIENT_ID=your_client_id
    ```
 
