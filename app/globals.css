@@ -1,26 +1,270 @@
 @import "tailwindcss";
 
+/* The theme toggle stamps data-theme on <html>; it wins over the OS setting both ways. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/*
+ * Design tokens.
+ * Chart colours come from a validated data-viz palette (CVD-safe categorical
+ * order, single-hue sequential ramp); text tokens are contrast-checked
+ * against their surfaces (≥ 4.5:1 for body text).
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+
+  --page: #f4f4f1;
+  --surface: #fcfcfb;
+  --surface-2: #f3f2ee;
+  --surface-3: #e9e8e3;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --ink-3: #6f6d68;
+  --line: rgb(11 11 11 / 0.09);
+  --line-strong: rgb(11 11 11 / 0.16);
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --shadow: 0 1px 2px rgb(11 11 11 / 0.04), 0 1px 1px rgb(11 11 11 / 0.02);
+  --shadow-lg: 0 24px 48px -12px rgb(11 11 11 / 0.18), 0 2px 6px rgb(11 11 11 / 0.06);
+
+  --accent: #2a78d6;
+  --accent-ink: #256abf;
+  --accent-wash: rgb(42 120 214 / 0.1);
+  --accent-wash-strong: rgb(42 120 214 / 0.18);
+
+  --good: #006300;
+  --bad: #d03b3b;
+
+  /* Categorical slots, fixed order. */
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
+  --series-7: #4a3aa7;
+  --series-8: #e34948;
+  --series-other: #b7b5ad;
+
+  /* Sequential (blue), low → high. Dark mode flips the anchor so "low" sits near the surface. */
+  --seq-1: #cde2fb;
+  --seq-2: #9ec5f4;
+  --seq-3: #6da7ec;
+  --seq-4: #3987e5;
+  --seq-5: #256abf;
+  --seq-6: #184f95;
+  --seq-7: #0d366b;
+  --seq-empty: #ecebe6;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --page: #0d0d0d;
+  --surface: #1a1a19;
+  --surface-2: #222220;
+  --surface-3: #2c2c2a;
+  --ink: #ffffff;
+  --ink-2: #c3c2b7;
+  --ink-3: #9a988f;
+  --line: rgb(255 255 255 / 0.09);
+  --line-strong: rgb(255 255 255 / 0.16);
+  --grid: #2c2c2a;
+  --axis: #383835;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 24px 48px -12px rgb(0 0 0 / 0.7), 0 2px 6px rgb(0 0 0 / 0.4);
+
+  --accent: #3987e5;
+  --accent-ink: #6da7ec;
+  --accent-wash: rgb(57 135 229 / 0.14);
+  --accent-wash-strong: rgb(57 135 229 / 0.24);
+
+  --good: #0ca30c;
+  --bad: #e66767;
+
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --series-4: #c98500;
+  --series-5: #d55181;
+  --series-6: #008300;
+  --series-7: #9085e9;
+  --series-8: #e66767;
+  --series-other: #5d5c57;
+
+  --seq-1: #0d366b;
+  --seq-2: #184f95;
+  --seq-3: #256abf;
+  --seq-4: #3987e5;
+  --seq-5: #6da7ec;
+  --seq-6: #9ec5f4;
+  --seq-7: #cde2fb;
+  --seq-empty: #262624;
 }
 
+/* Before the theme script runs (or without JS), follow the OS. */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --page: #0d0d0d;
+    --surface: #1a1a19;
+    --surface-2: #222220;
+    --surface-3: #2c2c2a;
+    --ink: #ffffff;
+    --ink-2: #c3c2b7;
+    --ink-3: #9a988f;
+    --line: rgb(255 255 255 / 0.09);
+    --line-strong: rgb(255 255 255 / 0.16);
+    --grid: #2c2c2a;
+    --axis: #383835;
+    --accent: #3987e5;
+    --accent-ink: #6da7ec;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@theme inline {
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-grid: var(--grid);
+  --color-axis: var(--axis);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-wash: var(--accent-wash);
+  --color-accent-wash-strong: var(--accent-wash-strong);
+  --color-good: var(--good);
+  --color-bad: var(--bad);
+  --color-series-1: var(--series-1);
+  --color-series-2: var(--series-2);
+  --color-series-3: var(--series-3);
+  --color-series-4: var(--series-4);
+  --color-series-5: var(--series-5);
+  --color-series-6: var(--series-6);
+  --color-series-7: var(--series-7);
+  --color-series-8: var(--series-8);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --shadow-card: var(--shadow);
+  --shadow-float: var(--shadow-lg);
+
+  --animate-rise: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-fade: fade 0.3s ease both;
+  --animate-grow-x: grow-x 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-sheet: sheet-in 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-pop: pop 0.18s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateX(32px);
+    opacity: 0;
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+}
+
+@keyframes eq {
+  0%,
+  100% {
+    transform: scaleY(0.25);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background: var(--page);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  ::selection {
+    background: var(--accent-wash-strong);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary {
+    cursor: pointer;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--surface-3) transparent;
+  }
+
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+
+  dialog::backdrop {
+    background: rgb(0 0 0 / 0.42);
+    backdrop-filter: blur(2px);
+  }
+}
+
+@layer utilities {
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .eq-bar {
+    transform-origin: bottom;
+    animation: eq 1.4s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
