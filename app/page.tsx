@@ -147,6 +147,7 @@ export default function HomePage() {
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-center text-[15px] text-ink-3">
             Pick any year or date range and every chart follows along. Click any artist, song or album for its own story.
+            Connect Spotify if you like, for artist photos, your top genres and one-click playlists.
           </p>
           <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {FEATURES.map(({ icon: Icon, title, body }) => (
@@ -215,7 +216,7 @@ export default function HomePage() {
 
       <footer className="relative z-10 mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 border-t border-line px-4 py-8 text-xs text-ink-3 sm:flex-row sm:px-6">
         <p>
-          {APP_NAME} isn&rsquo;t affiliated with Spotify. Spotify is a trademark of Spotify AB. Album art is from Spotify.
+          {APP_NAME} isn&rsquo;t affiliated with Spotify. Spotify is a trademark of Spotify AB. Album art and artist photos are from Spotify.
         </p>
         <p>Made for exploring your own listening.</p>
       </footer>

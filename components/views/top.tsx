@@ -6,11 +6,14 @@ import { PageHeader } from "@/components/dashboard/page-header";
 import { RankedTable } from "@/components/dashboard/ranked";
 import { useEntitySheet } from "@/components/dashboard/sheet-context";
 import { useScope } from "@/components/dashboard/use-scope";
+import { GenresCard } from "@/components/spotify/genres-card";
+import { SavePlaylistButton } from "@/components/spotify/save-playlist";
 import { EntityArt } from "@/components/ui/entity-art";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { entityVisual } from "@/lib/artwork";
 import { formatDuration, formatNumber, formatPercent } from "@/lib/format";
+import { rangeLabel, rangeSpan } from "@/lib/range";
 import type { Scope } from "@/lib/stats/scope";
 import { cached } from "@/lib/stats/cache";
 import { rank, type EntityType, type Ranked } from "@/lib/stats/top";
@@ -57,10 +60,26 @@ export function TopView({ type, title, noun }: { type: EntityType; title: string
   const ranked = useMemo(() => cached(scope, `rank:${type}:time`, () => rank(scope, type, "time")), [scope, type]);
   const total = ranked.reduce((sum, entry) => sum + entry.ms, 0);
   const topTen = ranked.slice(0, 10).reduce((sum, entry) => sum + entry.ms, 0);
+  const { ds } = scope.p;
+  const hasLinks = useMemo(() => ds.songs.uri.some((uri) => uri.startsWith("spotify:track:")), [ds]);
 
   return (
     <>
-      <PageHeader title={title} />
+      <PageHeader title={title}>
+        {type === "song" && ranked.length > 0 && (
+          <SavePlaylistButton
+            available={hasLinks}
+            label="Save top 50"
+            name={`Encore · Top 50 tracks · ${rangeLabel(scope.range.spec)}`}
+            description={`Your 50 most played songs, ${rangeSpan(scope.range)}. Made with Encore.`}
+            uris={() =>
+              rank(scope, "song", "plays")
+                .slice(0, 50)
+                .map((entry) => ds.songs.uri[entry.id])
+            }
+          />
+        )}
+      </PageHeader>
       {ranked.length === 0 ? (
         <Card>
           <EmptyState icon={<Music />} title={`No ${noun}s in this range`}>
@@ -70,6 +89,7 @@ export function TopView({ type, title, noun }: { type: EntityType; title: string
       ) : (
         <>
           <Podium scope={scope} type={type} entries={ranked.slice(0, 3)} />
+          {type === "artist" && <GenresCard scope={scope} />}
           <p className="mt-6 mb-4 text-sm text-ink-3">
             You played <span className="font-medium text-ink-2 tabular">{formatNumber(ranked.length)}</span> different{" "}
             {noun}s

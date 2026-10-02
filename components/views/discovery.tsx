@@ -11,6 +11,7 @@ import { useWidth } from "@/components/charts/use-width";
 import { PageHeader, SectionTitle } from "@/components/dashboard/page-header";
 import { useEntitySheet } from "@/components/dashboard/sheet-context";
 import { useScope } from "@/components/dashboard/use-scope";
+import { SavePlaylistButton } from "@/components/spotify/save-playlist";
 import { EntityArt } from "@/components/ui/entity-art";
 import { Button } from "@/components/ui/button";
 import { Card, CardBody, CardHeader } from "@/components/ui/card";
@@ -241,7 +242,21 @@ export function DiscoveryView() {
             ))
           )}
         </ListCard>
-        <ListCard title="Forgotten favourites" description="Played 10+ times, but not in the last 6 months of the range">
+        <ListCard
+          title="Forgotten favourites"
+          description="Played 10+ times, but not in the last 6 months of the range"
+          action={
+            data.forgotten.length > 0 && (
+              <SavePlaylistButton
+                available={ds.songs.uri.some((uri) => uri.startsWith("spotify:track:"))}
+                label="Save"
+                name="Encore · Forgotten favourites"
+                description="Songs you loved but haven't played in a while. Made with Encore."
+                uris={() => forgottenFavorites(scope, 180, 50).map((f) => ds.songs.uri[f.song])}
+              />
+            )
+          }
+        >
           {data.forgotten.length === 0 ? (
             <Empty>Nothing forgotten. You keep coming back.</Empty>
           ) : (
@@ -277,10 +292,20 @@ export function DiscoveryView() {
   );
 }
 
-function ListCard({ title, description, children }: { title: string; description: string; children: ReactNode }) {
+function ListCard({
+  title,
+  description,
+  action,
+  children,
+}: {
+  title: string;
+  description: string;
+  action?: ReactNode;
+  children: ReactNode;
+}) {
   return (
     <Card>
-      <CardHeader title={title} description={description} />
+      <CardHeader title={title} description={description} action={action} />
       <CardBody className="pt-3">
         <ol className="-mx-2">{children}</ol>
       </CardBody>

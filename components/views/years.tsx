@@ -7,6 +7,7 @@ import { PageHeader } from "@/components/dashboard/page-header";
 import { RankedList } from "@/components/dashboard/ranked";
 import { useEntitySheet } from "@/components/dashboard/sheet-context";
 import { useScope } from "@/components/dashboard/use-scope";
+import { SavePlaylistButton } from "@/components/spotify/save-playlist";
 import { EntityArt } from "@/components/ui/entity-art";
 import { Card } from "@/components/ui/card";
 import { Delta } from "@/components/ui/stat";
@@ -20,7 +21,8 @@ import {
   formatMonthShort,
   formatNumber,
 } from "@/lib/format";
-import { withRange } from "@/lib/stats/scope";
+import { KINDS, withKinds, withRange } from "@/lib/stats/scope";
+import { rank } from "@/lib/stats/top";
 import { cached } from "@/lib/stats/cache";
 import { yearReviews, type YearReview } from "@/lib/stats/years";
 import { dayOf } from "@/lib/time";
@@ -116,7 +118,20 @@ function YearCard({ review, index }: { review: YearReview; index: number }) {
         </div>
 
         <div>
-          <h3 className="mb-1 text-[13px] font-semibold text-ink">Top songs</h3>
+          <div className="mb-1 flex items-center justify-between gap-2">
+            <h3 className="text-[13px] font-semibold text-ink">Top songs</h3>
+            <SavePlaylistButton
+              available={ds.songs.uri.some((uri) => uri.startsWith("spotify:track:"))}
+              label="Save top 50"
+              name={`Encore · Top songs of ${year}`}
+              description={`Your 50 most played songs of ${year}. Made with Encore.`}
+              uris={() =>
+                rank(withKinds(scope, KINDS.music), "song", "plays")
+                  .slice(0, 50)
+                  .map((entry) => ds.songs.uri[entry.id])
+              }
+            />
+          </div>
           <RankedList ds={ds} type="song" entries={review.songs} by="plays" />
           {review.shows.length > 0 && (
             <>
