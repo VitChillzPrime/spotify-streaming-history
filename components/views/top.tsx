@@ -3,12 +3,13 @@
 import { Music } from "lucide-react";
 import { useMemo } from "react";
 import { PageHeader } from "@/components/dashboard/page-header";
-import { entityVisual, RankedTable } from "@/components/dashboard/ranked";
+import { RankedTable } from "@/components/dashboard/ranked";
 import { useEntitySheet } from "@/components/dashboard/sheet-context";
 import { useScope } from "@/components/dashboard/use-scope";
+import { EntityArt } from "@/components/ui/entity-art";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
-import { Monogram } from "@/components/ui/monogram";
+import { entityVisual } from "@/lib/artwork";
 import { formatDuration, formatNumber, formatPercent } from "@/lib/format";
 import type { Scope } from "@/lib/stats/scope";
 import { cached } from "@/lib/stats/cache";
@@ -36,7 +37,7 @@ function Podium({ scope, type, entries }: { scope: Scope; type: EntityType; entr
             <span className={cn("absolute top-3 right-4 text-[44px] leading-none font-semibold tracking-[-0.05em] opacity-90 tabular", MEDAL[i])}>
               {i + 1}
             </span>
-            <Monogram name={visual.title} seed={visual.seed} round={visual.round} size="lg" className="sm:size-16 sm:text-xl" />
+            <EntityArt ds={ds} entity={ref} size="lg" className="sm:size-16" />
             <span className="min-w-0 sm:mt-1">
               <span className="block truncate pr-10 text-[17px] font-semibold tracking-[-0.015em] text-ink sm:pr-0">{visual.title}</span>
               {visual.subtitle && <span className="block truncate text-[13px] text-ink-3">{visual.subtitle}</span>}

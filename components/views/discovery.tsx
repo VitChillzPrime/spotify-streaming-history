@@ -11,10 +11,10 @@ import { useWidth } from "@/components/charts/use-width";
 import { PageHeader, SectionTitle } from "@/components/dashboard/page-header";
 import { useEntitySheet } from "@/components/dashboard/sheet-context";
 import { useScope } from "@/components/dashboard/use-scope";
+import { EntityArt } from "@/components/ui/entity-art";
 import { Button } from "@/components/ui/button";
 import { Card, CardBody, CardHeader } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
-import { Monogram } from "@/components/ui/monogram";
 import { Segmented } from "@/components/ui/segmented";
 import { Stat } from "@/components/ui/stat";
 import { formatDay, formatDuration, formatMonth, formatMonthLong, formatNumber, formatPercent } from "@/lib/format";
@@ -151,7 +151,7 @@ export function DiscoveryView() {
                         onClick={() => open({ type: "artist", id: d.id })}
                         className="flex w-full items-center gap-3 rounded-xl px-2 py-1.5 text-left hover:bg-surface-2"
                       >
-                        <Monogram name={ds.artists[d.id]} round size="sm" />
+                        <EntityArt ds={ds} entity={{ type: "artist", id: d.id }} size="sm" />
                         <span className="min-w-0 flex-1">
                           <span className="block truncate text-[13px] font-medium text-ink">{ds.artists[d.id]}</span>
                           <span className="block truncate text-xs text-ink-3">
@@ -176,7 +176,7 @@ export function DiscoveryView() {
                         onClick={() => open({ type: "song", id: d.id })}
                         className="flex w-full items-center gap-3 rounded-xl px-2 py-1.5 text-left hover:bg-surface-2"
                       >
-                        <Monogram name={ds.songs.name[d.id]} seed={ds.artists[ds.songs.artist[d.id]]} size="sm" />
+                        <EntityArt ds={ds} entity={{ type: "song", id: d.id }} size="sm" />
                         <span className="min-w-0 flex-1">
                           <span className="block truncate text-[13px] font-medium text-ink">{ds.songs.name[d.id]}</span>
                           <span className="block truncate text-xs text-ink-3">
@@ -206,7 +206,7 @@ export function DiscoveryView() {
             onClick={() => open({ type: "artist", id: era.artist })}
             className="group flex min-w-0 items-center gap-3 rounded-2xl border border-line bg-surface p-3.5 text-left shadow-card transition-colors hover:bg-surface-2"
           >
-            <Monogram name={ds.artists[era.artist]} round />
+            <EntityArt ds={ds} entity={{ type: "artist", id: era.artist }} />
             <span className="min-w-0 flex-1">
               <span className="block text-[11px] font-semibold tracking-[0.06em] text-ink-3 uppercase">{formatMonth(era.start)}</span>
               <span className="block truncate text-sm font-semibold text-ink">{ds.artists[era.artist]}</span>
@@ -258,7 +258,7 @@ export function DiscoveryView() {
                 onClick={() => open({ type: "artist", id: l.artist })}
                 className="flex w-full items-center gap-3 rounded-xl px-2 py-1.5 text-left hover:bg-surface-2"
               >
-                <Monogram name={ds.artists[l.artist]} round size="sm" />
+                <EntityArt ds={ds} entity={{ type: "artist", id: l.artist }} size="sm" />
                 <span className="min-w-0 flex-1">
                   <span className="flex items-baseline justify-between gap-2">
                     <span className="truncate text-[13px] font-medium text-ink">{ds.artists[l.artist]}</span>
@@ -304,7 +304,7 @@ function SongRow({ song, detail, value }: { song: number; detail: string; value:
         onClick={() => open({ type: "song", id: song })}
         className={cn("flex w-full items-center gap-3 rounded-xl px-2 py-1.5 text-left hover:bg-surface-2")}
       >
-        <Monogram name={ds.songs.name[song]} seed={artist} size="sm" />
+        <EntityArt ds={ds} entity={{ type: "song", id: song }} size="sm" />
         <span className="min-w-0 flex-1">
           <span className="block truncate text-[13px] font-medium text-ink">{ds.songs.name[song]}</span>
           <span className="block truncate text-xs text-ink-3">

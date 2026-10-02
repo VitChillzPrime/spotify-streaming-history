@@ -92,7 +92,11 @@ export interface Dataset {
   // Dictionaries.
   artists: string[];
   songs: { name: string[]; artist: Int32Array; uri: string[] };
-  albums: { name: string[]; artist: Int32Array };
+  /**
+   * `uri` is a track on the album (its most played), used to look up cover art.
+   * Datasets imported before artwork support don't have it.
+   */
+  albums: { name: string[]; artist: Int32Array; uri?: string[] };
   shows: string[];
   episodes: { name: string[]; show: Int32Array; uri: string[] };
   books: { title: string[]; uri: string[] };

@@ -5,6 +5,7 @@ import { useDeferredValue, useMemo, useState, type ReactNode } from "react";
 import { PageHeader } from "@/components/dashboard/page-header";
 import { useEntitySheet } from "@/components/dashboard/sheet-context";
 import { useScope } from "@/components/dashboard/use-scope";
+import { EntityArt } from "@/components/ui/entity-art";
 import { IconButton } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Monogram } from "@/components/ui/monogram";
@@ -117,7 +118,11 @@ export function HistoryView() {
                         className="flex w-full min-w-0 items-center gap-3 text-left disabled:cursor-default"
                       >
                         <span className="hidden sm:block">
-                          <Monogram name={info.title} seed={info.seed} size="sm" />
+                          {info.ref ? (
+                            <EntityArt ds={ds} entity={info.ref} size="sm" />
+                          ) : (
+                            <Monogram name={info.title} seed={info.seed} size="sm" />
+                          )}
                         </span>
                         <span className="min-w-0">
                           <span className="block truncate text-[13px] font-medium text-ink">{info.title}</span>

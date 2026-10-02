@@ -7,8 +7,8 @@ import { PageHeader } from "@/components/dashboard/page-header";
 import { RankedList } from "@/components/dashboard/ranked";
 import { useEntitySheet } from "@/components/dashboard/sheet-context";
 import { useScope } from "@/components/dashboard/use-scope";
+import { EntityArt } from "@/components/ui/entity-art";
 import { Card } from "@/components/ui/card";
-import { Monogram } from "@/components/ui/monogram";
 import { Delta } from "@/components/ui/stat";
 import {
   formatDay,
@@ -95,7 +95,7 @@ function YearCard({ review, index }: { review: YearReview; index: number }) {
               onClick={() => open({ type: "artist", id: topArtist.id })}
               className="flex w-full items-center gap-4 rounded-2xl bg-accent-wash p-4 text-left transition-colors hover:bg-accent-wash-strong"
             >
-              <Monogram name={ds.artists[topArtist.id]} round size="lg" />
+              <EntityArt ds={ds} entity={{ type: "artist", id: topArtist.id }} size="lg" />
               <span className="min-w-0">
                 <span className="block text-xs font-medium text-accent-ink">Artist of the year</span>
                 <span className="block truncate text-lg font-semibold tracking-[-0.015em] text-ink">
