@@ -8,6 +8,13 @@ Nothing is uploaded. The export is unzipped and parsed in your browser, and the
 results are stored in your browser's IndexedDB. Anyone can use it with their own
 data.
 
+**Try it at [encore.vitumbikochilinda.me](https://encore.vitumbikochilinda.me).**
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/overview-dark.png">
+  <img alt="The Encore overview page: total listening time with a chart over time, and tiles for streams, songs, artists and skip rate" src="docs/screenshots/overview-light.png">
+</picture>
+
 ## Features
 
 - **Overview**: total listening time, streams, top artists/tracks/albums, highlights
