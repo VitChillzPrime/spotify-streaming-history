@@ -1,5 +1,5 @@
 import { createLimiter } from "@/lib/resource-cache";
-import { accessToken } from "@/lib/spotify/auth";
+import { accessToken, signOut } from "@/lib/spotify/auth";
 
 const API = "https://api.spotify.com/v1";
 
@@ -88,6 +88,25 @@ export interface Artist {
 export const getProfile = () => spotifyFetch<Profile>("/me");
 export const getTrack = (id: string) => spotifyFetch<Track>(`/tracks/${encodeURIComponent(id)}`);
 export const getArtist = (id: string) => spotifyFetch<Artist>(`/artists/${encodeURIComponent(id)}`);
+
+/**
+ * Checks that Spotify lets this account use the app. Development Mode apps only
+ * serve accounts on their allowlist; anyone else can log in but gets 403 on every
+ * call, so they're signed out with an explanation instead of looking connected.
+ */
+export async function checkAccess(): Promise<void> {
+  try {
+    await getProfile();
+  } catch (error) {
+    if (error instanceof SpotifyApiError && error.status === 403) {
+      signOut();
+      throw new SpotifyApiError(
+        403,
+        "Spotify hasn't approved your account for this site's Spotify app. Its owner can add up to 5 accounts, or you can use your own Client ID in Settings. Your stats and album art work without connecting.",
+      );
+    }
+  }
+}
 
 /** The smallest image at least `min` pixels wide (images come largest first). */
 export function pickImage(images: SpotifyImage[] | undefined, min = 160): string | null {

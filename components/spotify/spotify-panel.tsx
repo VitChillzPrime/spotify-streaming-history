@@ -101,6 +101,12 @@ export function SpotifyPanel() {
               {customClientId ? "Change Client ID" : "Use my own Client ID"}
             </Button>
           </div>
+          {!customClientId && (
+            <p className="text-xs leading-5 text-ink-3">
+              Spotify only lets accounts this site&rsquo;s owner has approved connect (up to 5). If yours isn&rsquo;t one of
+              them, use your own Client ID. Your stats and album art work either way.
+            </p>
+          )}
         </>
       ) : (
         <form
