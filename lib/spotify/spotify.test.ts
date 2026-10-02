@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { getTrack } from "@/lib/spotify/api";
+import { checkAccess, getTrack } from "@/lib/spotify/api";
 import { aggregateGenres } from "@/lib/spotify/artists";
 import { finishLogin, sessionStore } from "@/lib/spotify/auth";
 import { loginBlocker } from "@/lib/spotify/config";
@@ -133,5 +133,22 @@ describe("Spotify session and API", () => {
     await expect(getTrack("t1")).resolves.toMatchObject({ id: "t1" });
     expect(calls).toEqual(["api:Bearer old", "token:", "api:Bearer new", "api:Bearer new"]);
     expect(sessionStore.get()?.refreshToken).toBe("r");
+  });
+
+  it("signs out accounts Spotify hasn't allowlisted", async () => {
+    sessionStore.set({ accessToken: "a", refreshToken: "r", expiresAt: Date.now() + 3_600_000, clientId: "client" });
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => json({ error: { message: "Check settings on developer.spotify.com/dashboard, the user may not be registered." } }, 403)),
+    );
+    await expect(checkAccess()).rejects.toThrow(/approved your account/);
+    expect(sessionStore.get()).toBeNull();
+  });
+
+  it("keeps the session when the access check fails for other reasons", async () => {
+    sessionStore.set({ accessToken: "a", refreshToken: "r", expiresAt: Date.now() + 3_600_000, clientId: "client" });
+    vi.stubGlobal("fetch", vi.fn(async () => json({}, 500)));
+    await expect(checkAccess()).resolves.toBeUndefined();
+    expect(sessionStore.get()).not.toBeNull();
   });
 });

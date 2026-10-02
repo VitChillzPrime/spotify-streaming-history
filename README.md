@@ -27,6 +27,9 @@ data.
 - Settings for time zone (Spotify records plays in UTC) and what counts as a stream (30 s by default).
 - **Optional Spotify connection**: artist photos, your top genres, and saving your top songs, a year's
   favourites or your forgotten favourites as private playlists.
+  Spotify only lets accounts the deployment's owner has approved connect (5 at most), so on someone
+  else's deployment you'll usually need your own Client ID (see [Spotify connection](#spotify-connection-optional)).
+  Everything else works without connecting.
 
 Sections only appear when your export has the data for them: audiobooks, video, podcasts,
 skips, devices and countries all depend on what Spotify included.
@@ -90,7 +93,9 @@ Album art needs no setup. Artist photos, genres and playlists use the Spotify We
    Anyone can also paste their own Client ID in **Settings → Spotify account**.
 
 Spotify limits Development Mode apps to 5 users, who must be added under **User Management**
-in the dashboard. Since February 2026 the API only allows single-item lookups, so artist details
+in the dashboard. Anyone else can log in but Spotify refuses their requests, so Encore signs them
+out and suggests using their own Client ID. Opening the connection to everyone requires Spotify's
+Extended Quota Mode, which is only granted to registered businesses with a large user base. Since February 2026 the API only allows single-item lookups, so artist details
 are fetched one at a time and cached in IndexedDB for 30 days. Genres are deprecated by Spotify
 and missing for many artists.
 
@@ -125,3 +130,7 @@ API client, using synthetic fixtures in `lib/test-fixtures.ts`.
   by pull request, then `preview` is merged into `main`. Merged feature branches are deleted.
 
 Encore isn't affiliated with Spotify. Spotify is a trademark of Spotify AB.
+
+## License
+
+[MIT](LICENSE)

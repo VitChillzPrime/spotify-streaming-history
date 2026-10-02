@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Brand } from "@/components/brand";
 import { ButtonLink } from "@/components/ui/button";
+import { checkAccess } from "@/lib/spotify/api";
 import { finishLogin } from "@/lib/spotify/auth";
 
 // Codes are single-use, and React runs effects twice in development, so both
@@ -17,7 +18,10 @@ export function SpotifyCallback() {
 
   useEffect(() => {
     let active = true;
-    completion ??= finishLogin(new URLSearchParams(window.location.search));
+    completion ??= finishLogin(new URLSearchParams(window.location.search)).then(async (returnTo) => {
+      await checkAccess();
+      return returnTo;
+    });
     completion.then(
       (returnTo) => {
         if (active) router.replace(returnTo.startsWith("/") ? returnTo : "/dashboard");
