@@ -14,7 +14,7 @@ data.
   (biggest day, longest streak, longest session, peak hour, songs on repeat).
 - **Year in review**: a recap of every year in your history, compared by daily average.
 - **Top artists, tracks, albums, podcasts and audiobooks**: ranked by time or streams,
-  with share, trend sparklines and first-listen dates. Click any name for a detail sheet.
+  with album art, share, trend sparklines and first-listen dates. Click any name for a detail sheet.
 - **Listening clock**: listening over time, time of day, day of week, a weekday × hour
   heatmap, a calendar for each year and month-by-month comparisons.
 - **Habits**: skip, shuffle and offline rates over time, most/never skipped songs, how plays
@@ -25,6 +25,8 @@ data.
 - Filters for any year, recent period or custom range, and for music / podcasts / audiobooks.
 - Light and dark themes that override the system setting (or follow it).
 - Settings for time zone (Spotify records plays in UTC) and what counts as a stream (30 s by default).
+- **Optional Spotify connection**: artist photos, your top genres, and saving your top songs, a year's
+  favourites or your forgotten favourites as private playlists.
 
 Sections only appear when your export has the data for them: audiobooks, video, podcasts,
 skips, devices and countries all depend on what Spotify included.
@@ -46,7 +48,10 @@ imported together, the extended history wins for the dates it covers.
 
 - Files are processed in a Web Worker on your device; there is no backend.
 - IP addresses, usernames and user agents in the export are never read or stored.
-- Monograms stand in for album art, because fetching artwork would send your history to a third party.
+- Album art comes from Spotify's public oEmbed endpoint, requested by your browser with only the item's ID.
+  Turn it off in **Settings → Album art** to keep every request on your device.
+- Connecting Spotify is optional and asks only for permission to create private playlists. The session
+  is kept in this browser.
 - Delete everything from **Settings → Your data**.
 
 > Personal exports (`*.zip`, extracted export folders) are gitignored. Never commit real listening data.
@@ -66,6 +71,29 @@ npm run build    # static production build
 Every route is statically prerendered, so the build can be deployed to any static or
 Next.js host (for example Vercel).
 
+### Spotify connection (optional)
+
+Album art needs no setup. Artist photos, genres and playlists use the Spotify Web API:
+
+1. Create an app in the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
+   (the owner needs Spotify Premium) and tick **Web API**.
+2. Add redirect URIs: `http://127.0.0.1:3000/callback` for local development and
+   `https://<your-domain>/callback` for your deployment. Spotify rejects `localhost`, so open
+   the app at `http://127.0.0.1:3000` when testing logins locally.
+3. Set the Client ID for everyone using your deployment:
+
+   ```bash
+   # .env.local (gitignored)
+   NEXT_PUBLIC_SPOTIFY_CLIENT_ID=your_client_id
+   ```
+
+   Anyone can also paste their own Client ID in **Settings → Spotify account**.
+
+Spotify limits Development Mode apps to 5 users, who must be added under **User Management**
+in the dashboard. Since February 2026 the API only allows single-item lookups, so artist details
+are fetched one at a time and cached in IndexedDB for 30 days. Genres are deprecated by Spotify
+and missing for many artists.
+
 ### How it works
 
 - `lib/ingest/`: reads zips with the browser's native `DecompressionStream` (falling back to
@@ -79,13 +107,16 @@ Next.js host (for example Vercel).
   Results are memoized per scope in `lib/stats/cache.ts`.
 - `components/charts/`: hand-built, accessible SVG charts. Each one has keyboard navigation,
   tooltips and a table view, using a colour-blind-safe palette.
+- `lib/artwork.ts`, `lib/artwork-client.ts`: pick a representative track or episode for each
+  artist, album and show, then look up its cover through Spotify's oEmbed endpoint (cached).
+- `lib/spotify/`: the optional Web API connection (Authorization Code with PKCE, no backend).
 - `app/`: the landing page and the `/dashboard/*` pages.
 
 ### Tests
 
 `npm test` runs unit tests for parsing (every export shape, including audiobooks, video and
-the basic export), time-zone handling and the statistics, using synthetic fixtures in
-`lib/test-fixtures.ts`.
+the basic export), time-zone handling, the statistics, artwork lookup and the Spotify login and
+API client, using synthetic fixtures in `lib/test-fixtures.ts`.
 
 ## Branches
 
