@@ -20,7 +20,7 @@ export function formatCompact(value: number): string {
 }
 
 export function formatPercent(ratio: number, precise = false): string {
-  if (!Number.isFinite(ratio)) return "–";
+  if (!Number.isFinite(ratio)) return "n/a";
   if (!precise && ratio > 0 && ratio < 0.01) return "<1%";
   return (precise ? precisePercentFormat : percentFormat).format(ratio);
 }
@@ -102,9 +102,15 @@ export function formatMonthShort(day: number): string {
   return dayFormat({ month: "short" }).format(dayToDate(day));
 }
 
+/**
+ * "Mar 4 to Sep 30, 2026" or "Mar 28, 2023 to Sep 30, 2026". Written out by hand
+ * because Intl's formatRange joins the two dates with an en dash.
+ */
 export function formatDayRange(from: number, to: number): string {
   if (from === to) return formatDay(from);
-  return dayFormat({ dateStyle: "medium" }).formatRange(dayToDate(from), dayToDate(to));
+  const sameYear = dayToDate(from).getUTCFullYear() === dayToDate(to).getUTCFullYear();
+  const start = sameYear ? formatDay(from, { month: "short", day: "numeric" }) : formatDay(from);
+  return `${start} to ${formatDay(to)}`;
 }
 
 /** "9 PM" / "21" depending on the viewer's locale. */

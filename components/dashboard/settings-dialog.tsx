@@ -9,7 +9,7 @@ import { ThemeToggle } from "@/components/theme";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogHeader } from "@/components/ui/dialog";
 import { Segmented } from "@/components/ui/segmented";
-import { formatDay, formatInstant, formatNumber, plural } from "@/lib/format";
+import { formatDayRange, formatInstant, formatNumber, plural } from "@/lib/format";
 import { settingsStore } from "@/lib/settings";
 import { storageUsage } from "@/lib/storage";
 import { systemTimeZone } from "@/lib/time";
@@ -111,7 +111,7 @@ function SettingsBody({ onClose }: { onClose: () => void }) {
             <dd className="text-right text-ink tabular">{formatNumber(dataset.size)}</dd>
             <dt className="text-ink-3">Covers</dt>
             <dd className="text-right text-ink">
-              {formatDay(prepared.firstDay)} – {formatDay(prepared.lastDay)}
+              {formatDayRange(prepared.firstDay, prepared.lastDay)}
             </dd>
             <dt className="text-ink-3">Files read</dt>
             <dd className="text-right text-ink">

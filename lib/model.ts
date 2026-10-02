@@ -74,7 +74,7 @@ export interface Dataset {
   size: number;
 
   // Per-stream columns (index i = one stream), sorted by start time.
-  /** Epoch ms (UTC) when playback stopped — Spotify's `ts`. */
+  /** Epoch ms (UTC) when playback stopped: Spotify's `ts`. */
   end: Float64Array;
   /** Milliseconds played. */
   ms: Uint32Array;

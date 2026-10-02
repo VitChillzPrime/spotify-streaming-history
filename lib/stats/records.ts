@@ -75,10 +75,10 @@ export const SESSION_GAP = 30 * MINUTE_MS;
 
 export const SESSION_BUCKETS = [
   { label: "Under 15 min", max: 15 * MINUTE_MS },
-  { label: "15–30 min", max: 30 * MINUTE_MS },
-  { label: "30–60 min", max: HOUR_MS },
-  { label: "1–2 hours", max: 2 * HOUR_MS },
-  { label: "2–4 hours", max: 4 * HOUR_MS },
+  { label: "15 to 30 min", max: 30 * MINUTE_MS },
+  { label: "30 to 60 min", max: HOUR_MS },
+  { label: "1 to 2 hours", max: 2 * HOUR_MS },
+  { label: "2 to 4 hours", max: 4 * HOUR_MS },
   { label: "4+ hours", max: Infinity },
 ] as const;
 

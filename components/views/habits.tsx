@@ -116,7 +116,7 @@ export function HabitsView() {
     return parts;
   })();
 
-  const ratio = (r: { known: number; on: number }) => (r.known ? formatPercent(r.on / r.known) : "–");
+  const ratio = (r: { known: number; on: number }) => (r.known ? formatPercent(r.on / r.known) : "n/a");
 
   return (
     <>
@@ -234,7 +234,7 @@ export function HabitsView() {
                   <div className="min-w-0 flex-1">
                     <p className="font-medium text-ink">{formatDay(p.day[session.first])}</p>
                     <p className="text-xs text-ink-3">
-                      {formatInstant(session.start, p.timeZone, { timeStyle: "short" })} –{" "}
+                      {formatInstant(session.start, p.timeZone, { timeStyle: "short" })} to{" "}
                       {formatInstant(
                         session.end,
                         p.timeZone,

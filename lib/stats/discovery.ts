@@ -50,7 +50,7 @@ export interface DiscoveryTimeline {
   /** Artists heard for the first time ever, per bucket. */
   newArtists: Uint32Array;
   newSongs: Uint32Array;
-  /** Distinct artists streamed per bucket — how varied your listening was. */
+  /** Distinct artists streamed per bucket: how varied your listening was. */
   artists: Uint32Array;
   songs: Uint32Array;
 }

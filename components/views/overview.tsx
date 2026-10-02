@@ -102,7 +102,7 @@ export function OverviewView() {
     });
     tiles.push({
       label: "Skip rate",
-      value: musicSkips.known ? formatPercent(musicSkips.on / musicSkips.known) : "–",
+      value: musicSkips.known ? formatPercent(musicSkips.on / musicSkips.known) : "n/a",
       detail: musicSkips.known ? `${formatNumber(musicSkips.on)} songs skipped` : "Not in this export",
     });
   } else {
@@ -149,7 +149,7 @@ export function OverviewView() {
               {daysOfListening >= 1 ? (
                 <>
                   That&rsquo;s <span className="font-semibold text-ink">{formatDays(summary.ms)} days</span> of nonstop
-                  audio — <span className="tabular">{formatNumber(toMinutes(summary.ms))}</span> minutes.
+                  audio, or <span className="tabular">{formatNumber(toMinutes(summary.ms))}</span> minutes.
                 </>
               ) : (
                 <>
@@ -328,7 +328,7 @@ export function OverviewView() {
 function busiestBucket(t: ReturnType<typeof timeline>): string {
   let best = -1;
   for (let i = 0; i < t.ms.length; i++) if (best < 0 || t.ms[i] > t.ms[best]) best = i;
-  return best < 0 ? "–" : `${bucketLabel(t.buckets[best], t.granularity)} · ${formatDuration(t.ms[best])}`;
+  return best < 0 ? "n/a" : `${bucketLabel(t.buckets[best], t.granularity)} · ${formatDuration(t.ms[best])}`;
 }
 
 function Row({ label, value }: { label: string; value: ReactNode }) {
@@ -385,7 +385,7 @@ function RepeatHighlight({ repeat }: { repeat: { song: number; day: number; play
         icon={<Repeat />}
         label="On repeat"
         value={`“${ds.songs.name[repeat.song]}” × ${formatNumber(repeat.plays)}`}
-        detail={`${ds.artists[ds.songs.artist[repeat.song]]} — all on ${formatDay(repeat.day)}`}
+        detail={`${ds.artists[ds.songs.artist[repeat.song]]}, all on ${formatDay(repeat.day)}`}
       />
     </button>
   );

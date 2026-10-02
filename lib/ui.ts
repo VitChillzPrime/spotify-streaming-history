@@ -3,7 +3,7 @@ export function cn(...classes: (string | false | null | undefined)[]): string {
   return classes.filter(Boolean).join(" ");
 }
 
-/** A stable hue (0–359) for a name, used to tint monogram tiles. */
+/** A stable hue (0 to 359) for a name, used to tint monogram tiles. */
 export function hueOf(text: string): number {
   let hash = 2166136261;
   for (let i = 0; i < text.length; i++) {

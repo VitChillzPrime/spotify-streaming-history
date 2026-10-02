@@ -151,7 +151,7 @@ export function Legend({ items, className }: { items: { label: string; color: st
   );
 }
 
-/** A thin horizontal meter for a share (0–1). */
+/** A thin horizontal meter for a share (0 to 1). */
 export function Meter({ value, color = "var(--series-1)", className }: { value: number; color?: string; className?: string }) {
   return (
     <div className={cn("h-1.5 w-full overflow-hidden rounded-full bg-surface-3", className)}>

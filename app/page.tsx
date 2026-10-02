@@ -50,7 +50,7 @@ const FEATURES: { icon: LucideIcon; title: string; body: string }[] = [
   {
     icon: CalendarRange,
     title: "Year in review",
-    body: "A recap of every year in your history — not just the last one — side by side.",
+    body: "A recap of every year in your history, not just the last one, side by side.",
   },
 ];
 
@@ -77,7 +77,7 @@ const STEPS: { icon: LucideIcon; title: string; body: ReactNode }[] = [
   {
     icon: Mail,
     title: "Wait for the email",
-    body: "Spotify emails you a download link once it's ready — usually within a few days, sometimes up to 30.",
+    body: "Spotify emails you a download link once it's ready, usually within a few days and sometimes up to 30.",
   },
   {
     icon: Upload,
@@ -119,13 +119,13 @@ export default function HomePage() {
         <section className="mx-auto max-w-3xl px-4 pt-14 pb-20 text-center sm:px-6 sm:pt-20">
           <p className="inline-flex animate-fade items-center gap-2 rounded-full border border-line bg-surface/80 px-3.5 py-1.5 text-[13px] font-medium text-ink-2 shadow-card backdrop-blur">
             <Lock className="size-3.5 text-accent-ink" aria-hidden />
-            Private by design — runs entirely in your browser
+            Private by design. Everything runs in your browser.
           </p>
           <h1 className="mt-7 animate-rise text-[44px] leading-[1.02] font-semibold tracking-[-0.045em] text-balance text-ink sm:text-[68px]">
             Your Spotify history, <span className="text-accent-ink">finally unpacked.</span>
           </h1>
           <p className="mx-auto mt-6 max-w-xl animate-rise text-[17px] leading-7 text-pretty text-ink-2 [animation-delay:80ms]">
-            Drop in the data export Spotify sends you and explore every play you&rsquo;ve ever made — top artists and
+            Drop in the data export Spotify sends you and explore every play you&rsquo;ve ever made: top artists and
             songs, when and how you listen, streaks, eras and a year-by-year review.
           </p>
           <Equalizer className="mx-auto mt-10 mb-2 h-16 max-w-md opacity-80" />
@@ -191,7 +191,7 @@ export default function HomePage() {
                   Your listening stays yours.
                 </h2>
                 <p className="mt-3 text-[15px] leading-7 text-ink-3">
-                  {APP_NAME} is a static web page. There&rsquo;s no server to send your history to — the work happens in
+                  {APP_NAME} is a static web page. There&rsquo;s no server to send your history to. The work happens in
                   your browser, and your stats are saved on your device.
                 </p>
               </div>

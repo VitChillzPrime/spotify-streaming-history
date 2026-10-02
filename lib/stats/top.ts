@@ -17,7 +17,7 @@ export interface EntityRef {
 
 /**
  * How a stream maps to an entity of a type: streams of `kind`, keyed by the
- * `item` (or `album`) column, optionally through a lookup table — e.g. an
+ * `item` (or `album`) column, optionally through a lookup table (e.g. an
  * artist is `songs.artist[item]`. Chosen once per call so hot loops avoid closures.
  */
 export function entityKey(scope: Scope, type: EntityType) {

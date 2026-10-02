@@ -137,7 +137,7 @@ function SidebarFooter({ onSettings }: { onSettings: () => void }) {
         <div className="min-w-0 text-xs leading-4">
           <p className="font-medium text-ink tabular">{formatNumber(dataset?.size ?? 0)} plays</p>
           <p className="truncate text-ink-3">
-            {formatMonth(p.firstDay)} – {formatMonth(p.lastDay)}
+            {formatMonth(p.firstDay)} to {formatMonth(p.lastDay)}
           </p>
         </div>
       </div>

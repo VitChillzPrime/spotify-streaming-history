@@ -111,7 +111,7 @@ export function CalendarHeatmap({
   const weeks = Math.ceil((last - gridStart + 1) / 7);
   const left = 30;
   const top = 18;
-  // Fill the card: 10–20px per week column; narrower screens scroll sideways.
+  // Fill the card: 10 to 20px per week column; narrower screens scroll sideways.
   const step = Math.max(10, Math.min(20, Math.floor((available - left) / weeks) || 15));
   const gap = step >= 16 ? 4 : 3;
   const size = step - gap;
@@ -183,7 +183,7 @@ export function CalendarHeatmap({
   );
 }
 
-/** Rows of years, columns of months — compare the same month across years. */
+/** Rows of years, columns of months: compare the same month across years. */
 export function MonthYearGrid({
   rows,
 }: {

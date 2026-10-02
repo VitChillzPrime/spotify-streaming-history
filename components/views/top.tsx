@@ -74,7 +74,7 @@ export function TopView({ type, title, noun }: { type: EntityType; title: string
             {noun}s
             {ranked.length > 10 && (
               <>
-                {" "}— your top 10 make up <span className="font-medium text-ink-2">{formatPercent(total ? topTen / total : 0)}</span> of
+                , and your top 10 make up <span className="font-medium text-ink-2">{formatPercent(total ? topTen / total : 0)}</span> of
                 the time
               </>
             )}

@@ -209,7 +209,7 @@ export function RankedTable({ scope, type, noun }: { scope: Scope; type: EntityT
                     </td>
                     {firsts && (
                       <td className="hidden py-2.5 pr-4 text-xs text-ink-3 tabular xl:table-cell">
-                        {first >= 0 ? formatDay(scope.p.day[first]) : "–"}
+                        {first >= 0 ? formatDay(scope.p.day[first]) : "n/a"}
                       </td>
                     )}
                   </tr>

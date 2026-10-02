@@ -81,7 +81,7 @@ export function Dropzone({ onImported, compact = false }: { onImported?: () => v
             style={ratio === null ? undefined : { width: `${Math.round(ratio * 100)}%` }}
           />
         </div>
-        <p className="mt-4 text-xs text-ink-3">Everything is processed on this device — nothing is uploaded.</p>
+        <p className="mt-4 text-xs text-ink-3">Everything is processed on this device. Nothing is uploaded.</p>
       </div>
     );
   }
@@ -128,7 +128,7 @@ export function Dropzone({ onImported, compact = false }: { onImported?: () => v
           {dragging ? <FileArchive className="size-6" aria-hidden /> : <Upload className="size-6" aria-hidden />}
         </div>
         <p className="mt-5 text-[17px] font-semibold tracking-[-0.01em] text-ink">
-          {dragging ? "Drop it — we'll take it from here" : "Drop your Spotify data here"}
+          {dragging ? "Drop it and we'll take it from here" : "Drop your Spotify data here"}
         </p>
         <p className="mt-1.5 max-w-sm text-[13px] leading-5 text-ink-3">
           The <span className="font-medium text-ink-2">my_spotify_data.zip</span> file Spotify emailed you, or the

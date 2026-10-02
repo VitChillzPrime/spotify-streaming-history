@@ -38,7 +38,7 @@ function fixture(): Scope {
     play("2024-01-02T09:00:00Z", 240, B),
     // Wednesday
     play("2024-01-03T09:00:00Z", 100, C),
-    // Friday — the streak breaks on Thursday
+    // Friday: the streak breaks on Thursday
     play("2024-01-05T08:00:00Z", 200, A),
     play("2024-01-05T20:00:00Z", 3600, { book: "Book", bookUri: "spotify:show:bk", chapter: "Ch 1" }),
   ]);

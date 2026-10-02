@@ -10,7 +10,7 @@ export interface Prepared {
   start: Float64Array;
   /** Local day number of each start. Non-decreasing, so date ranges are index ranges. */
   day: Int32Array;
-  /** Local hour (0–23) of each start. */
+  /** Local hour (0 to 23) of each start. */
   hour: Uint8Array;
   firstDay: number;
   lastDay: number;

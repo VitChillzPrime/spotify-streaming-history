@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Encore — your Spotify listening, unpacked",
+    default: "Encore: your Spotify listening, unpacked",
     template: "%s · Encore",
   },
   description:

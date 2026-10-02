@@ -179,7 +179,7 @@ export interface YearMonths {
   outside: boolean[];
 }
 
-/** Listening per month for each year in range — for comparing years side by side. */
+/** Listening per month for each year in range, for comparing years side by side. */
 export function monthsByYear(scope: Scope): YearMonths[] {
   const { p, range, kinds } = scope;
   if (range.days === 0) return [];

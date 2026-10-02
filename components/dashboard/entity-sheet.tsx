@@ -152,7 +152,7 @@ function EntityPanel({ entity, onBack, onClose }: { entity: EntityRef; onBack?: 
               <Fact label="Streams" value={formatNumber(totals.plays)} detail={`${formatNumber(totals.count)} plays in total`} />
               <Fact
                 label="Rank"
-                value={detail.rank ? `#${formatNumber(detail.rank)}` : "–"}
+                value={detail.rank ? `#${formatNumber(detail.rank)}` : "n/a"}
                 detail={`of ${formatNumber(detail.peers)} ${PEER_NOUN[entity.type]}`}
               />
               <Fact label="Share" value={formatPercent(detail.share, true)} detail={SHARE_OF[entity.type]} />

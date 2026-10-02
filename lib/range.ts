@@ -1,4 +1,4 @@
-import { formatDay, formatDayRange } from "@/lib/format";
+import { formatDayRange } from "@/lib/format";
 import type { Prepared } from "@/lib/prepare";
 import { dayOf } from "@/lib/time";
 
@@ -93,8 +93,8 @@ export function rangeLabel(spec: RangeSpec): string {
   }
 }
 
-/** "Mar 28, 2023 – Sep 30, 2026" for the part of the range that has data. */
+/** "Mar 28, 2023 to Sep 30, 2026" for the part of the range that has data. */
 export function rangeSpan(range: Range): string {
-  if (range.days === 0) return `${formatDay(range.fromDay)} – ${formatDay(range.toDay)}`;
+  if (range.days === 0) return formatDayRange(range.fromDay, range.toDay);
   return formatDayRange(range.dataFrom, range.dataTo);
 }

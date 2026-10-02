@@ -21,7 +21,7 @@ describe("parseTimestamp", () => {
   });
 });
 
-describe("DatasetBuilder — extended history", () => {
+describe("DatasetBuilder: extended history", () => {
   it("classifies tracks, podcast episodes, audiobooks and unknown rows", () => {
     const ds = build((b) =>
       b.addExtended([
@@ -118,7 +118,7 @@ describe("DatasetBuilder — extended history", () => {
   });
 });
 
-describe("DatasetBuilder — basic account data", () => {
+describe("DatasetBuilder: basic account data", () => {
   it("reads music and podcast rows", () => {
     const ds = build((b) =>
       b.addBasic([

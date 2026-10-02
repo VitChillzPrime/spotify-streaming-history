@@ -143,7 +143,7 @@ export function platforms(scope: Scope): PlatformShare[] {
   return result;
 }
 
-/** Listening per platform group per year — how your devices changed over time. */
+/** Listening per platform group per year: how your devices changed over time. */
 export function platformsByYear(scope: Scope, granularity: Granularity = "year") {
   const { p, range, kinds } = scope;
   const kindCol = p.ds.kind;

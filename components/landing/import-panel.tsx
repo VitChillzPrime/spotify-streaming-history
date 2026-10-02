@@ -26,7 +26,7 @@ export function ImportPanel() {
           Your stats are ready
         </div>
         <p className="mt-3 text-2xl font-semibold tracking-[-0.025em] text-ink">
-          {formatNumber(dataset.size)} plays, {formatMonth(prepared.firstDay)} – {formatMonth(prepared.lastDay)}
+          {formatNumber(dataset.size)} plays, {formatMonth(prepared.firstDay)} to {formatMonth(prepared.lastDay)}
         </p>
         <p className="mt-1 text-[13px] text-ink-3">
           Imported {formatInstant(dataset.meta.importedAt, timeZone, { dateStyle: "medium" })} · stored only in this

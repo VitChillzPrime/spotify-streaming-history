@@ -80,7 +80,7 @@ export function DiscoveryView() {
         <Stat label={`Artists per ${unit}`} value={formatNumber(data.avgArtists)} detail="on average" />
         <Stat
           label="Most loyal"
-          value={data.loyalty.artists[0] ? ds.artists[data.loyalty.artists[0].artist] : "–"}
+          value={data.loyalty.artists[0] ? ds.artists[data.loyalty.artists[0].artist] : "n/a"}
           detail={
             data.loyalty.artists[0]
               ? `in ${data.loyalty.artists[0].periods} of ${data.loyalty.periods} months`
@@ -243,7 +243,7 @@ export function DiscoveryView() {
         </ListCard>
         <ListCard title="Forgotten favourites" description="Played 10+ times, but not in the last 6 months of the range">
           {data.forgotten.length === 0 ? (
-            <Empty>Nothing forgotten — you keep coming back.</Empty>
+            <Empty>Nothing forgotten. You keep coming back.</Empty>
           ) : (
             data.forgotten.slice(0, 8).map((f) => (
               <SongRow key={f.song} song={f.song} detail={`Last played ${formatMonthLong(f.lastDay)}`} value={formatNumber(f.plays)} />
