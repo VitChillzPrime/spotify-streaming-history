@@ -2,21 +2,34 @@
 
 import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import type { SettingsSection } from "@/components/dashboard/settings-context";
 import { useData } from "@/components/data-provider";
 import { Dropzone } from "@/components/import/dropzone";
+import { SpotifyPanel } from "@/components/spotify/spotify-panel";
 import { ThemeToggle } from "@/components/theme";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogHeader } from "@/components/ui/dialog";
 import { Segmented } from "@/components/ui/segmented";
+import { Switch } from "@/components/ui/switch";
 import { formatDayRange, formatInstant, formatNumber, plural } from "@/lib/format";
 import { settingsStore } from "@/lib/settings";
 import { storageUsage } from "@/lib/storage";
 import { systemTimeZone } from "@/lib/time";
 
-function Section({ title, description, children }: { title: string; description?: ReactNode; children: ReactNode }) {
+function Section({
+  title,
+  description,
+  children,
+  id,
+}: {
+  title: string;
+  description?: ReactNode;
+  children: ReactNode;
+  id?: string;
+}) {
   return (
-    <section className="border-t border-line px-6 py-5">
+    <section id={id} className="scroll-mt-4 border-t border-line px-6 py-5">
       <h3 className="text-sm font-semibold text-ink">{title}</h3>
       {description && <p className="mt-0.5 text-[13px] leading-5 text-ink-3">{description}</p>}
       <div className="mt-3">{children}</div>
@@ -30,18 +43,27 @@ const THRESHOLDS = [
   { value: "60000", label: "1 min+" },
 ] as const;
 
-export function SettingsDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
+export function SettingsDialog({
+  open,
+  onClose,
+  section,
+}: {
+  open: boolean;
+  onClose: () => void;
+  section?: SettingsSection;
+}) {
   return (
     <Dialog open={open} onClose={onClose} label="Settings" size="md">
       <div className="max-h-[inherit] overflow-y-auto">
         <DialogHeader title="Settings" description="Preferences are saved in this browser." onClose={onClose} />
-        <SettingsBody onClose={onClose} />
+        <SettingsBody onClose={onClose} section={section} />
       </div>
     </Dialog>
   );
 }
 
-function SettingsBody({ onClose }: { onClose: () => void }) {
+function SettingsBody({ onClose, section }: { onClose: () => void; section?: SettingsSection }) {
+  const spotifySection = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { dataset, prepared, clearData, timeZone } = useData();
   const [settings, setSettings] = settingsStore.useValue();
@@ -55,6 +77,10 @@ function SettingsBody({ onClose }: { onClose: () => void }) {
       return [systemTimeZone()];
     }
   }, []);
+
+  useEffect(() => {
+    if (section === "spotify") spotifySection.current?.scrollIntoView({ block: "start" });
+  }, [section]);
 
   useEffect(() => {
     let active = true;
@@ -72,6 +98,30 @@ function SettingsBody({ onClose }: { onClose: () => void }) {
       <Section title="Appearance">
         <ThemeToggle showLabels />
       </Section>
+
+      <Section
+        title="Album art"
+        description="Covers load straight from Spotify (only the item IDs are sent). Turn this off to keep every request on this device."
+      >
+        <label className="flex items-center justify-between gap-4 text-[13px] text-ink-2">
+          Show album art and photos
+          <Switch
+            label="Show album art and photos"
+            checked={settings.artwork}
+            onChange={(artwork) => setSettings({ ...settings, artwork })}
+          />
+        </label>
+      </Section>
+
+      <div ref={spotifySection}>
+        <Section
+          id="spotify"
+          title="Spotify account"
+          description="Optional. Connect for artist photos, your top genres and saving playlists from your stats."
+        >
+          <SpotifyPanel />
+        </Section>
+      </div>
 
       <Section
         title="Time zone"

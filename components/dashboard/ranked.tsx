@@ -4,35 +4,26 @@ import { Search } from "lucide-react";
 import { useDeferredValue, useMemo, useState } from "react";
 import { Meter, Sparkline } from "@/components/charts/parts";
 import { useEntitySheet } from "@/components/dashboard/sheet-context";
+import { EntityArt } from "@/components/ui/entity-art";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
-import { Monogram } from "@/components/ui/monogram";
 import { Segmented } from "@/components/ui/segmented";
 import { formatDay, formatDuration, formatNumber, formatPercent } from "@/lib/format";
 import type { Dataset } from "@/lib/model";
 import { firstPlays } from "@/lib/stats/discovery";
 import { cached } from "@/lib/stats/cache";
+import { entityVisual } from "@/lib/artwork";
 import { entityLabel } from "@/lib/stats/entity";
 import { normalizeText } from "@/lib/stats/history";
 import type { Scope } from "@/lib/stats/scope";
 import { autoGranularity } from "@/lib/stats/time";
-import { rank, seriesFor, type EntityRef, type EntityType, type RankBy, type Ranked } from "@/lib/stats/top";
+import { rank, seriesFor, type EntityType, type RankBy, type Ranked } from "@/lib/stats/top";
 import { cn } from "@/lib/ui";
 
 export const RANK_OPTIONS = [
   { value: "time", label: "Time" },
   { value: "plays", label: "Streams" },
 ] as const satisfies readonly { value: RankBy; label: string }[];
-
-/** Name, tint seed and shape of an entity's monogram. */
-export function entityVisual(ds: Dataset, ref: EntityRef) {
-  const label = entityLabel(ds, ref);
-  return {
-    ...label,
-    seed: ref.type === "song" || ref.type === "album" ? label.subtitle : ref.type === "episode" ? label.subtitle : label.title,
-    round: ref.type === "artist",
-  };
-}
 
 /** A compact top-N list with relative bars, e.g. on the overview. */
 export function RankedList({
@@ -67,7 +58,7 @@ export function RankedList({
               className="group flex w-full items-center gap-3 rounded-xl px-2 py-2 text-left transition-colors hover:bg-surface-2"
             >
               <span className="w-5 shrink-0 text-right text-[13px] font-medium text-ink-3 tabular">{start + i}</span>
-              <Monogram name={visual.title} seed={visual.seed} round={visual.round} />
+              <EntityArt ds={ds} entity={ref} />
               <span className="min-w-0 flex-1">
                 <span className="flex items-baseline justify-between gap-3">
                   <span className="truncate text-sm font-medium text-ink">{visual.title}</span>
@@ -184,7 +175,7 @@ export function RankedTable({ scope, type, noun }: { scope: Scope; type: EntityT
                         }}
                         className="flex w-full min-w-0 items-center gap-3 text-left"
                       >
-                        <Monogram name={visual.title} seed={visual.seed} round={visual.round} />
+                        <EntityArt ds={ds} entity={ref} />
                         <span className="min-w-0">
                           <span className="block truncate text-sm font-medium text-ink group-hover:underline group-hover:decoration-line-strong group-hover:underline-offset-2">
                             {visual.title}

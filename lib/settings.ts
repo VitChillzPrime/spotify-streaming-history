@@ -8,16 +8,19 @@ export interface Settings {
   timeZone: string;
   /** Minimum play length that counts as a stream. */
   minMs: number;
+  /** Load cover art from Spotify. */
+  artwork: boolean;
 }
 
-export const DEFAULT_SETTINGS: Settings = { timeZone: "auto", minMs: DEFAULT_MIN_MS };
+export const DEFAULT_SETTINGS: Settings = { timeZone: "auto", minMs: DEFAULT_MIN_MS, artwork: true };
 
 export const settingsStore = jsonStore<Settings>("encore-settings", DEFAULT_SETTINGS, (value) => {
   if (typeof value !== "object" || value === null) return null;
-  const { timeZone, minMs } = value as Partial<Settings>;
+  const { timeZone, minMs, artwork } = value as Partial<Settings>;
   return {
     timeZone: typeof timeZone === "string" ? timeZone : DEFAULT_SETTINGS.timeZone,
     minMs: typeof minMs === "number" && minMs >= 0 ? minMs : DEFAULT_SETTINGS.minMs,
+    artwork: typeof artwork === "boolean" ? artwork : DEFAULT_SETTINGS.artwork,
   };
 });
 

@@ -341,7 +341,7 @@ export class DatasetBuilder {
         artist: Int32Array.from(this.songArtist),
         uri: this.representativeUris(),
       },
-      albums: { name: this.albumName, artist: Int32Array.from(this.albumArtist) },
+      albums: { name: this.albumName, artist: Int32Array.from(this.albumArtist), uri: this.albumUris() },
       shows: this.shows.values,
       episodes: {
         name: this.episodeName,
@@ -480,6 +480,19 @@ export class DatasetBuilder {
       if (count > best[song]) {
         best[song] = count;
         uris[song] = uri;
+      }
+    }
+    return uris;
+  }
+
+  /** The most played track URI on each album, so its cover art can be looked up. */
+  private albumUris(): string[] {
+    const uris = new Array<string>(this.albumName.length).fill("");
+    const best = new Array<number>(this.albumName.length).fill(0);
+    for (const [uri, { album, count }] of this.trackCache) {
+      if (album >= 0 && count > best[album]) {
+        best[album] = count;
+        uris[album] = uri;
       }
     }
     return uris;

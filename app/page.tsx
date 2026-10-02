@@ -25,7 +25,7 @@ const FEATURES: { icon: LucideIcon; title: string; body: string }[] = [
   {
     icon: Trophy,
     title: "Top artists, tracks & albums",
-    body: "Ranked by time or streams for any period, with trends, first listens and a deep-dive for every name.",
+    body: "Ranked by time or streams for any period, with album art, trends, first listens and a deep dive into every name.",
   },
   {
     icon: Clock,
@@ -89,7 +89,11 @@ const STEPS: { icon: LucideIcon; title: string; body: ReactNode }[] = [
 const PRIVACY: { icon: LucideIcon; title: string; body: string }[] = [
   { icon: Cpu, title: "Processed on your device", body: "Files are unzipped and parsed by your browser. Nothing is uploaded, ever." },
   { icon: Database, title: "Stored in this browser", body: "Your stats are kept in this browser's IndexedDB so they're here next time." },
-  { icon: ShieldCheck, title: "No accounts, no tracking", body: "No sign-up, no analytics, no third-party requests with your listening data." },
+  {
+    icon: ShieldCheck,
+    title: "No accounts, no tracking",
+    body: "No sign-up and no analytics. Album art loads straight from Spotify, and you can switch it off.",
+  },
   { icon: Trash2, title: "Delete anytime", body: "Remove everything from Settings in one click. IP addresses in the export are never read." },
 ];
 
@@ -143,6 +147,7 @@ export default function HomePage() {
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-center text-[15px] text-ink-3">
             Pick any year or date range and every chart follows along. Click any artist, song or album for its own story.
+            Connect Spotify if you like, for artist photos, your top genres and one-click playlists.
           </p>
           <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {FEATURES.map(({ icon: Icon, title, body }) => (
@@ -211,7 +216,7 @@ export default function HomePage() {
 
       <footer className="relative z-10 mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 border-t border-line px-4 py-8 text-xs text-ink-3 sm:flex-row sm:px-6">
         <p>
-          {APP_NAME} isn&rsquo;t affiliated with Spotify. Spotify is a trademark of Spotify AB.
+          {APP_NAME} isn&rsquo;t affiliated with Spotify. Spotify is a trademark of Spotify AB. Album art and artist photos are from Spotify.
         </p>
         <p>Made for exploring your own listening.</p>
       </footer>

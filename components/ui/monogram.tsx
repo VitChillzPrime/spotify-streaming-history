@@ -1,29 +1,39 @@
 import type { CSSProperties } from "react";
 import { cn, hueOf, initials } from "@/lib/ui";
 
-const SIZES = {
-  sm: "size-8 text-[11px]",
-  md: "size-10 text-[13px]",
-  lg: "size-14 text-lg",
-  xl: "size-20 text-2xl",
+export const TILE_SIZES = {
+  sm: "size-8",
+  md: "size-10",
+  lg: "size-14",
+  xl: "size-20",
+} as const;
+
+const TEXT_SIZES = {
+  sm: "text-[11px]",
+  md: "text-[13px]",
+  lg: "text-lg",
+  xl: "text-2xl",
 } as const;
 
 /**
- * A tinted initials tile standing in for artwork (the export has no images, and
- * fetching covers would send your history to a third party). Artists are round.
+ * A tinted initials tile: shown while cover art loads, and in its place when
+ * artwork is turned off or Spotify has none for the item.
  */
 export function Monogram({
   name,
   seed,
   size = "md",
   round = false,
+  fill = false,
   className,
 }: {
   name: string;
   /** Text that picks the tint; defaults to `name`. Songs use their artist so they match. */
   seed?: string;
-  size?: keyof typeof SIZES;
+  size?: keyof typeof TILE_SIZES;
   round?: boolean;
+  /** Fill the parent instead of using the size's dimensions. */
+  fill?: boolean;
   className?: string;
 }) {
   return (
@@ -34,8 +44,9 @@ export function Monogram({
         "inline-flex shrink-0 items-center justify-center font-semibold tracking-tight select-none",
         "bg-[oklch(0.93_0.035_var(--h))] text-[oklch(0.42_0.1_var(--h))]",
         "dark:bg-[oklch(0.3_0.045_var(--h))] dark:text-[oklch(0.86_0.07_var(--h))]",
-        round ? "rounded-full" : "rounded-[28%]",
-        SIZES[size],
+        round ? "rounded-full" : "rounded-[22%]",
+        fill ? "size-full" : TILE_SIZES[size],
+        TEXT_SIZES[size],
         className,
       )}
     >

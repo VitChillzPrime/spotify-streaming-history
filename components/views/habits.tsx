@@ -11,9 +11,9 @@ import { TimeChart } from "@/components/charts/time-chart";
 import { PageHeader, SectionTitle } from "@/components/dashboard/page-header";
 import { useEntitySheet } from "@/components/dashboard/sheet-context";
 import { useScope } from "@/components/dashboard/use-scope";
+import { EntityArt } from "@/components/ui/entity-art";
 import { Card, CardBody, CardHeader } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
-import { Monogram } from "@/components/ui/monogram";
 import { Segmented } from "@/components/ui/segmented";
 import { Stat } from "@/components/ui/stat";
 import {
@@ -327,7 +327,7 @@ function SkipCard({ title, entries, mode }: { title: string; entries: SkipEntry[
                   onClick={() => open({ type: "song", id: entry.song })}
                   className="flex w-full items-center gap-3 rounded-xl px-2 py-1.5 text-left hover:bg-surface-2"
                 >
-                  <Monogram name={ds.songs.name[entry.song]} seed={ds.artists[ds.songs.artist[entry.song]]} size="sm" />
+                  <EntityArt ds={ds} entity={{ type: "song", id: entry.song }} size="sm" />
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-[13px] font-medium text-ink">{ds.songs.name[entry.song]}</span>
                     <span className="block truncate text-xs text-ink-3">{ds.artists[ds.songs.artist[entry.song]]}</span>

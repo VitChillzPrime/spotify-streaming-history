@@ -3,10 +3,11 @@
 import { Database, Menu, Settings, TriangleAlert } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, type ReactNode } from "react";
+import { useCallback, useState, type ReactNode } from "react";
 import { Brand } from "@/components/brand";
 import { EntitySheetProvider } from "@/components/dashboard/entity-sheet";
 import { NAV } from "@/components/dashboard/nav";
+import { SettingsContext, type SettingsSection } from "@/components/dashboard/settings-context";
 import { SettingsDialog } from "@/components/dashboard/settings-dialog";
 import { useData, usePrepared } from "@/components/data-provider";
 import { Dropzone } from "@/components/import/dropzone";
@@ -25,60 +26,67 @@ export function DashboardShell({ children }: { children: ReactNode }) {
 
 function ReadyShell({ children }: { children: ReactNode }) {
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [settingsSection, setSettingsSection] = useState<SettingsSection | undefined>();
   const [menuOpen, setMenuOpen] = useState(false);
   const { saveError } = useData();
+  const openSettings = useCallback((section?: SettingsSection) => {
+    setSettingsSection(section);
+    setSettingsOpen(true);
+  }, []);
 
   return (
-    <EntitySheetProvider>
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-[264px] flex-col border-r border-line bg-page lg:flex">
-        <div className="px-6 pt-6 pb-5">
-          <Brand />
-        </div>
-        <NavLinks />
-        <SidebarFooter onSettings={() => setSettingsOpen(true)} />
-      </aside>
-
-      <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-line bg-page/85 px-4 backdrop-blur-md lg:hidden">
-        <Brand />
-        <div className="flex items-center gap-1">
-          <IconButton label="Settings" onClick={() => setSettingsOpen(true)}>
-            <Settings />
-          </IconButton>
-          <IconButton label="Open menu" onClick={() => setMenuOpen(true)}>
-            <Menu />
-          </IconButton>
-        </div>
-      </header>
-
-      <Dialog open={menuOpen} onClose={() => setMenuOpen(false)} variant="sheet" size="sm" label="Menu">
-        <div className="flex h-full flex-col">
+    <SettingsContext value={openSettings}>
+      <EntitySheetProvider>
+        <aside className="fixed inset-y-0 left-0 z-30 hidden w-[264px] flex-col border-r border-line bg-page lg:flex">
           <div className="px-6 pt-6 pb-5">
             <Brand />
           </div>
-          <NavLinks onNavigate={() => setMenuOpen(false)} />
-          <SidebarFooter
-            onSettings={() => {
-              setMenuOpen(false);
-              setSettingsOpen(true);
-            }}
-          />
-        </div>
-      </Dialog>
+          <NavLinks />
+          <SidebarFooter onSettings={() => openSettings()} />
+        </aside>
 
-      <SettingsDialog open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+        <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-line bg-page/85 px-4 backdrop-blur-md lg:hidden">
+          <Brand />
+          <div className="flex items-center gap-1">
+            <IconButton label="Settings" onClick={() => openSettings()}>
+              <Settings />
+            </IconButton>
+            <IconButton label="Open menu" onClick={() => setMenuOpen(true)}>
+              <Menu />
+            </IconButton>
+          </div>
+        </header>
 
-      <div className="lg:pl-[264px]">
-        <main className="mx-auto w-full max-w-[1240px] px-4 pt-6 pb-16 sm:px-6 lg:px-10 lg:pt-10">
-          {saveError && (
-            <div role="alert" className="mb-6 flex items-start gap-3 rounded-2xl border border-line bg-surface px-4 py-3 text-[13px] shadow-card">
-              <TriangleAlert className="mt-0.5 size-4 shrink-0 text-bad" aria-hidden />
-              <p className="text-ink-2">{saveError}</p>
+        <Dialog open={menuOpen} onClose={() => setMenuOpen(false)} variant="sheet" size="sm" label="Menu">
+          <div className="flex h-full flex-col">
+            <div className="px-6 pt-6 pb-5">
+              <Brand />
             </div>
-          )}
-          {children}
-        </main>
-      </div>
-    </EntitySheetProvider>
+            <NavLinks onNavigate={() => setMenuOpen(false)} />
+            <SidebarFooter
+              onSettings={() => {
+                setMenuOpen(false);
+                openSettings();
+              }}
+            />
+          </div>
+        </Dialog>
+
+        <SettingsDialog open={settingsOpen} section={settingsSection} onClose={() => setSettingsOpen(false)} />
+
+        <div className="lg:pl-[264px]">
+          <main className="mx-auto w-full max-w-[1240px] px-4 pt-6 pb-16 sm:px-6 lg:px-10 lg:pt-10">
+            {saveError && (
+              <div role="alert" className="mb-6 flex items-start gap-3 rounded-2xl border border-line bg-surface px-4 py-3 text-[13px] shadow-card">
+                <TriangleAlert className="mt-0.5 size-4 shrink-0 text-bad" aria-hidden />
+                <p className="text-ink-2">{saveError}</p>
+              </div>
+            )}
+            {children}
+          </main>
+        </div>
+      </EntitySheetProvider>
+    </SettingsContext>
   );
 }
 

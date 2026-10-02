@@ -4,15 +4,16 @@ import { ArrowLeft, ExternalLink, X } from "lucide-react";
 import { useCallback, useMemo, useState, type ReactNode } from "react";
 import { ColumnChart } from "@/components/charts/column-chart";
 import { TimeChart } from "@/components/charts/time-chart";
-import { entityVisual, RankedList } from "@/components/dashboard/ranked";
+import { RankedList } from "@/components/dashboard/ranked";
 import { SheetContext, useEntitySheet } from "@/components/dashboard/sheet-context";
 import { useScope } from "@/components/dashboard/use-scope";
+import { EntityArt } from "@/components/ui/entity-art";
 import { Button, buttonClass, IconButton } from "@/components/ui/button";
 import { Eyebrow } from "@/components/ui/card";
 import { Dialog } from "@/components/ui/dialog";
 import { EmptyState } from "@/components/ui/empty-state";
-import { Monogram } from "@/components/ui/monogram";
 import { formatDay, formatDuration, formatHour, formatNumber, formatPercent } from "@/lib/format";
+import { entityVisual } from "@/lib/artwork";
 import { rangeLabel, rangeSpan } from "@/lib/range";
 import { cached } from "@/lib/stats/cache";
 import { ENTITY_NOUN, entityDetail, spotifyUrl } from "@/lib/stats/entity";
@@ -107,7 +108,7 @@ function EntityPanel({ entity, onBack, onClose }: { entity: EntityRef; onBack?: 
 
       <div className="flex-1 overflow-y-auto px-5 pb-10 sm:px-7">
         <header className="flex items-center gap-4 pt-2">
-          <Monogram name={visual.title} seed={visual.seed} round={visual.round} size="xl" />
+          <EntityArt ds={ds} entity={entity} size="xl" />
           <div className="min-w-0">
             <Eyebrow>{ENTITY_NOUN[entity.type]}</Eyebrow>
             <h2 className="mt-1 text-2xl leading-tight font-semibold tracking-[-0.025em] text-ink [overflow-wrap:anywhere]">

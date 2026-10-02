@@ -16,10 +16,21 @@ export interface BarItem {
  * Ranked horizontal bars for one series (nominal categories): every bar wears
  * the same slot-1 colour, values sit at the bar end in text ink.
  */
-export function BarList({ items, className, max }: { items: BarItem[]; className?: string; max?: number }) {
+export function BarList({
+  items,
+  className,
+  max,
+  columns = 1,
+}: {
+  items: BarItem[];
+  className?: string;
+  max?: number;
+  /** Two columns from the `sm` breakpoint up. */
+  columns?: 1 | 2;
+}) {
   const top = max ?? Math.max(0, ...items.map((item) => item.value));
   return (
-    <ul className={cn("space-y-3", className)}>
+    <ul className={cn(columns === 2 ? "grid gap-x-8 gap-y-3 sm:grid-cols-2" : "space-y-3", className)}>
       {items.map((item) => {
         const body = (
           <>
